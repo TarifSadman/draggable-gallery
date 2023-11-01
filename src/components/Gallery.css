@@ -1,0 +1,38 @@
+.gallery-container {
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 20px;
+  gap: 16px;
+}
+
+.image-container {
+  min-width: 150px;
+  flex-grow: 1;
+  margin: 8px;
+  transition: transform 0.2s, border 0.2s;
+  cursor: pointer;
+  align-content: center;
+}
+
+@media (max-width: 768px) {
+  .image-container {
+    min-width: calc(33.33% - 16px);
+  }
+}
+
+.image-container:hover {
+  transform: scale(1.1);
+  border: 1px solid #1890ff;
+}
+
+.image {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border: 2px solid transparent;
+  transition: transform 0.2s, border 0.2s;
+}
+
+.selected .image {
+  border: 5px solid red;
+}
