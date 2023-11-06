@@ -1,58 +1,47 @@
-/* CSS for the featured image */
-.image-container.featured {
-  margin-right: 16px; /* Margin to separate the featured image from other images */
-  max-width: 400px; /* Adjust the width for the featured image */
-  transition: transform 0.2s, border 0.2s;
+.carousel-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-/* CSS for the other images */
-.image-container:not(.featured) {
-  margin-right: 8px; /* Margin to separate the other images */
-  max-width: 250px; /* Adjust the width for other images */
-  transition: transform 0.2s, border 0.2s;
+.feature-image-container {
+  max-width: 90%;
+  margin: 16px;
 }
 
-/* CSS for selected images (optional) */
-.image-container.selected {
-  border: 2px solid #FF5733; /* Example border style for selected images */
+.feature-image {
+  max-width: 650px;
+  max-height: 450px;
+  width: auto;
+  height: auto;
+  border: 1px solid #ccc;
 }
 
-/* Additional styling for the delete button and dropzone (if needed) */
-.button-container {
-  margin-top: 16px; /* Add margin above the button */
+.image-list {
+  display: flex;
+  margin: 16px;
 }
 
-.dropzone-container {
-  margin-top: 16px; /* Add margin above the dropzone area */
-}
-
-/* Keep the rest of your existing styles as is */
-.gallery-container {
-  flex-wrap: wrap;
-  justify-content: center;
-  padding: 20px;
-  gap: 16px;
-}
-
-@media (max-width: 768px) {
-  .image-container {
-    min-width: calc(33.33% - 16px);
-  }
-}
-
-.image-container:hover {
-  transform: scale(1.1);
-  border: 1px solid #1890ff;
-}
-
-.image {
+.image-item {
+  flex: 0 0 auto;
   width: 150px;
   height: 150px;
-  object-fit: cover;
-  border: 2px solid transparent;
-  transition: transform 0.2s, border 0.2s;
+  margin-right: 16px;
+  cursor: pointer;
+  position: relative;
 }
 
-.selected .image {
-  border: 5px solid red;
+img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: 1px solid #ccc;
+}
+
+.image-item.selected img {
+  border: 4px solid red;
+}
+
+button {
+  margin: 16px;
 }

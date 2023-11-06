@@ -1,12 +1,13 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Image, Button } from 'antd';
+import { Button } from 'antd';
 import { useDropzone } from 'react-dropzone';
-import IMG1 from '../images/150x150-1.png';
-import IMG2 from '../images/150x150-2.png';
-import IMG3 from '../images/150x150-3.png';
-import IMG4 from '../images/150x150-4.png';
-import IMG5 from '../images/150x150-5.png';
-import IMG6 from '../images/150x150-6.png';
+import IMG1 from '../images/I1.jpg';
+import IMG2 from '../images/I2.jpg';
+import IMG3 from '../images/I3.jpg';
+import IMG4 from '../images/I4.jpg';
+import IMG5 from '../images/I5.jpg';
+import IMG6 from '../images/I6.png';
 import './Gallery.css';
 
 const DraggableGallery = () => {
@@ -46,10 +47,18 @@ const DraggableGallery = () => {
   const [featureImageId, setFeatureImageId] = useState(null);
 
   useEffect(() => {
-    // Select a random image as the featured image on component mount
     const randomIndex = Math.floor(Math.random() * items.length);
     setFeatureImageId(items[randomIndex].id);
-  }, []);
+    
+    const timer = setInterval(() => {
+      const randomIndex = Math.floor(Math.random() * items.length);
+      setFeatureImageId(items[randomIndex].id);
+    }, 3000);
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, [items]);
 
   const onDrop = (acceptedFiles) => {
     const newItems = acceptedFiles.map((file) => ({
@@ -106,50 +115,46 @@ const DraggableGallery = () => {
     accept: 'image/*',
   });
 
+  console.log(onDrop);
+
   return (
     <>
-      <div className="gallery-container">
-        <Row gutter={[16, 16]} justify="center" align="middle">
-          <Col xs={24} sm={24} md={12} lg={12} xl={12}>
-            <div className="image-container featured">
-              {featureImageId && (
-                <Image
-                  src={items.find((item) => item.id === featureImageId).src}
-                  alt={`Image ${featureImageId}`}
-                  className="image"
-                  preview={false}
-                  style={{ width: '100%', height: '300px' }} // Adjust the height as per your preference
-                />
-              )}
+      <div className="carousel-container">
+        <div className="feature-image-container">
+        <div className="feature-image-container">
+  {featureImageId && items.find((item) => item.id === featureImageId) ? (
+    <img
+      src={items.find((item) => item.id === featureImageId).src}
+      alt={`Image ${featureImageId}`}
+      className="feature-image"
+      preview={false}
+    />
+  ) : (
+    <p>No feature image selected</p>
+  )}
+</div>
+
+        </div>
+        <div className="image-list">
+          {items.map((item) => (
+            <div
+              key={item.id}
+              className={`image-item ${item.selected ? 'selected' : ''}`}
+              onClick={() => toggleSelection(item.id)}
+              onDragStart={(e) => handleDragStart(e, item.id)}
+              onDragOver={(e) => handleDragOver(e)}
+              onDrop={(e) => handleDrop(e, item.id)}
+              draggable
+            >
+              <img
+                src={item.src}
+                alt={`Image ${item.id}`}
+                className={`image ${item.selected ? 'selected' : ''}`}
+                preview={false}
+              />
             </div>
-          </Col>
-          <Col xs={24} sm={24} md={12} lg={12} xl={12}>
-            <Row gutter={[16, 16]} justify="center" align="middle">
-              {items
-                .filter((item) => item.id !== featureImageId)
-                .map((item) => (
-                  <Col key={item.id} xs={12} sm={12} md={8} lg={6} xl={6}>
-                    <div
-                      className={`image-container ${item.selected ? 'selected' : ''}`}
-                      onClick={() => toggleSelection(item.id)}
-                      onDragStart={(e) => handleDragStart(e, item.id)}
-                      onDragOver={(e) => handleDragOver(e)}
-                      onDrop={(e) => handleDrop(e, item.id)}
-                      draggable
-                    >
-                      <Image
-                        src={item.src}
-                        alt={`Image ${item.id}`}
-                        className="image"
-                        preview={false}
-                        style={{ width: '100%' }}
-                      />
-                    </div>
-                  </Col>
-                ))}
-            </Row>
-          </Col>
-        </Row>
+          ))}
+        </div>
       </div>
       <Button onClick={deleteSelected} disabled={items.every((item) => !item.selected)}>
         Delete Selected
